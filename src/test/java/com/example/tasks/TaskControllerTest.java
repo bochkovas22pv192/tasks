@@ -103,7 +103,7 @@ class TaskControllerTest {
                 contentType("application/json").
                 body(requestBody).
                 when().
-                put("/tasks/1").
+                post("/tasks/").
                 then();
 
         Task[] temp = given()
@@ -226,6 +226,22 @@ class TaskControllerTest {
 
         String mess = sendPut(requestBody);
         MatcherAssert.assertThat(mess, equalTo("Поле \"Исполнитель задачи\" обязательно для заполнения."));
+    }
+
+    @Test
+    void noTaskExceptionExecutor() {
+        String requestBody = "{\"id\":2,\"email\":\"Ivan@mail.ru\",\"name\":\"Помыть полы\",\"description\":\"Мыть полы\",\"priority\":\"Низкий\",\"emailExecutor\":\"Ivan@mail.ru\",\"date\":\"2025-09-15\",\"timeCreate\":\"2024-09-15T01:32:46.406105\",\"state\":\"NEW\",\"timeUpdate\":\"2024-09-15T01:32:46.406105\"}";
+
+        String mess = given().
+                contentType("application/json").
+                body(requestBody).
+                when().
+                put("/tasks/2")
+                .then()
+                .statusCode(400)
+                .extract()
+                .asString();
+        MatcherAssert.assertThat(mess, equalTo("Нет такой задачи."));
     }
 
 }

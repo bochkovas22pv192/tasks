@@ -1,42 +1,44 @@
 package com.example.tasks.controllers;
 
 import com.example.tasks.models.Task;
-import com.example.tasks.services.UserService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.tasks.services.TaskService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
+
+
+
+@RequiredArgsConstructor
 @RestController
+@RequestMapping("/tasks")
 public class TaskController {
 
-    private final UserService service;
+    private final TaskService service;
 
-    TaskController(UserService userService) {
-        this.service = userService;
-    }
-
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/{id}")
     Optional<Task> tasksById(@PathVariable Long id) {
         return service.getTasksById(id);
     }
 
-    @GetMapping("/tasks")
+    @GetMapping()
     List<Task> tasksAll() {
         return service.getTasksAll();
     }
 
-    @PutMapping("/tasks/{id}")
-    Task replaceEmployee(@PathVariable Long id, @RequestBody Task newTask) {
+    @PostMapping("/")
+    Task createEmployee(@RequestBody Task newTask) {
+        return service.postTask(newTask);
+    }
+
+    @PutMapping("/{id}")
+    Task updateEmployee(@PathVariable Long id, @RequestBody Task newTask) {
         return service.putTask(newTask, id);
     }
 
-    @DeleteMapping("/tasks/{id}")
+    @DeleteMapping("/{id}")
     void deleteEmployee(@PathVariable Long id) {
         service.deleteTask(id);
     }

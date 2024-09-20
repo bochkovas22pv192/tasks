@@ -6,6 +6,7 @@ import com.example.tasks.State;
 import com.example.tasks.models.Task;
 import com.example.tasks.repository.TaskRepository;
 import com.example.tasks.exceptions.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,24 +14,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+
+
+@RequiredArgsConstructor
 @Service
-public class UserService {
+public class TaskService {
 
     private final TaskRepository repository;
 
-    public UserService(TaskRepository taskRepository){
-        this.repository = taskRepository;
-    }
-
-    public Optional<Task> getTasksById(Long id){
-        return repository.findById(id);
-    }
-
-    public List<Task> getTasksAll(){
-        return repository.findAll();
-    }
-
-    public Task putTask(Task newTask, Long id){
+    private void checkForExceptions(Task newTask){
         if(newTask.getName().isEmpty()){
             throw new TaskNameEmptyException();
         }
@@ -54,6 +46,29 @@ public class UserService {
         if(newTask.getEmailExecutor().isEmpty()){
             throw new TaskEmailExecutorEmptyException();
         }
+    }
+
+
+    public Optional<Task> getTasksById(Long id){
+        return repository.findById(id);
+    }
+
+    public List<Task> getTasksAll(){
+        return repository.findAll();
+    }
+
+    public Task postTask(Task newTask){
+        checkForExceptions(newTask);
+
+        newTask.setTimeUpdate(LocalDateTime.now());
+        newTask.setState(State.NEW);
+        newTask.setTimeCreate(LocalDateTime.now());
+        return repository.save(newTask);
+
+    }
+
+    public Task putTask(Task newTask, Long id){
+        checkForExceptions(newTask);
 
         newTask.setTimeUpdate(LocalDateTime.now());
         return repository.findById(id)
@@ -66,11 +81,7 @@ public class UserService {
                     task.setPriority(newTask.getPriority());
                     return repository.save(task);
                 })
-                .orElseGet(() -> {
-                    newTask.setState(State.NEW);
-                    newTask.setTimeCreate(LocalDateTime.now());
-                    return repository.save(newTask);
-                });
+                .orElseThrow(() -> new NoTaskException());
     }
     public void deleteTask(Long id){
         repository.deleteById(id);

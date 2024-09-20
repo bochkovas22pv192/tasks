@@ -6,8 +6,16 @@ import java.util.Objects;
 
 import com.example.tasks.State;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name ="tb_task")
 public class Task {
@@ -44,9 +52,6 @@ public class Task {
     @Column(name="time_update", nullable = false)
     private LocalDateTime timeUpdate;
 
-    Task() {}
-
-
     public Task(String email, String name, String description, String priority, String emailExecutor, LocalDate date, LocalDateTime timeCreate, State state, LocalDateTime timeUpdate) {
         this.email = email;
         this.name = name;
@@ -56,99 +61,6 @@ public class Task {
         this.date = date;
         this.timeCreate = timeCreate;
         this.state = state;
-        this.timeUpdate = timeUpdate;
-    }
-
-    public Task(Long id, String email, String name, String description, String priority, String emailExecutor, LocalDate date, LocalDateTime timeCreate, State state, LocalDateTime timeUpdate) {
-        this.id = id;
-        this.email = email;
-        this.name = name;
-        this.description = description;
-        this.priority = priority;
-        this.emailExecutor = emailExecutor;
-        this.date = date;
-        this.timeCreate = timeCreate;
-        this.state = state;
-        this.timeUpdate = timeUpdate;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public LocalDateTime getTimeUpdate() {
-        return timeUpdate;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public LocalDateTime getTimeCreate() {
-        return timeCreate;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public String getEmailExecutor() {
-        return emailExecutor;
-    }
-
-    public String getPriority() {
-        return priority;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-
-    public void setEmailExecutor(String emailExecutor) {
-        this.emailExecutor = emailExecutor;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public void setTimeCreate(LocalDateTime timeCreate) {
-        this.timeCreate = timeCreate;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    public void setTimeUpdate(LocalDateTime timeUpdate) {
         this.timeUpdate = timeUpdate;
     }
 

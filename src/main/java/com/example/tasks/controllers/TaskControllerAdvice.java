@@ -44,4 +44,10 @@ class TaskControllerAdvice {
     String TaskEmailExecutorEmptyHandler(TaskEmailExecutorEmptyException ex) {
         return ex.getMessage();
     }
+
+    @ExceptionHandler(NoTaskException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String NoTaskHandler(NoTaskException ex) {
+        return ex.getMessage();
+    }
 }
